@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  go:
+    container_name: ca-and-ddd-mockup-v1_go
+    build:
+      context: "./docker"
+    volumes:
+      - ./go:/app
+      - db:/app/db
+    ports:
+      - "1323:1323"
+      - "2345:2345"
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+
+volumes:
+  db:
