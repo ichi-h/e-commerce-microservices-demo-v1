@@ -1,4 +1,4 @@
-module ca-and-ddd-mockup-v1
+module cart
 
 go 1.22.4
 

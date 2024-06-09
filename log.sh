@@ -1,1 +1,1 @@
-docker logs -f ca-and-ddd-mockup-v1_go
+docker logs -f go-cart

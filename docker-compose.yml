@@ -1,11 +1,11 @@
 version: "3.7"
 services:
-  go:
-    container_name: ca-and-ddd-mockup-v1_go
+  go-cart:
+    container_name: go-cart
     build:
       context: "./docker"
     volumes:
-      - ./go:/app
+      - ./go/services/cart:/app
       - db:/app/db
     ports:
       - "1323:1323"
