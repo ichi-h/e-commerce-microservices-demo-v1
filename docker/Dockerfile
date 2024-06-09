@@ -4,8 +4,7 @@ WORKDIR /app
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install \
-  ca-certificates \
-  sqlite3=3.* && \
+  ca-certificates && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   go install github.com/air-verse/air@latest && \
   go install github.com/go-delve/delve/cmd/dlv@latest

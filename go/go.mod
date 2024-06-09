@@ -2,11 +2,7 @@ module ca-and-ddd-mockup-v1
 
 go 1.22.4
 
-require (
-	github.com/jmoiron/sqlx v1.4.0
-	github.com/labstack/echo/v4 v4.12.0
-	github.com/mattn/go-sqlite3 v1.14.22
-)
+require github.com/labstack/echo/v4 v4.12.0
 
 require (
 	github.com/labstack/gommon v0.4.2 // indirect
