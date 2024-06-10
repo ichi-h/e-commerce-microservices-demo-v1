@@ -6,7 +6,6 @@ services:
       context: "./docker"
     volumes:
       - ./go/services/cart:/app
-      - db:/app/db
     ports:
       - "1323:1323"
       - "2345:2345"
@@ -15,5 +14,30 @@ services:
     cap_add:
       - SYS_PTRACE
 
-volumes:
-  db:
+  go-product:
+    container_name: go-product
+    build:
+      context: "./docker"
+    volumes:
+      - ./go/services/product:/app
+    ports:
+      - "1324:1324"
+      - "2346:2346"
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+
+  go-order:
+    container_name: go-order
+    build:
+      context: "./docker"
+    volumes:
+      - ./go/services/order:/app
+    ports:
+      - "1325:1325"
+      - "2347:2347"
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE

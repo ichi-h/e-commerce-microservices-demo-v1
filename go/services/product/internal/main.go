@@ -7,11 +7,11 @@ import (
 )
 
 func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "cart server is running!")
+	return c.String(http.StatusOK, "product server is running!")
 }
 
 func main() {
 	e := echo.New()
 	e.GET("/", hello)
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":1324"))
 }

@@ -1,5 +1,7 @@
 # e-commerce-microservices-demo-v1
 
+## Technology Stack
+
 ## Architecture Diagram
 
 ```mermaid
