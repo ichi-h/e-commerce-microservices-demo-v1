@@ -1,17 +1,48 @@
 # e-commerce-microservices-demo-v1
 
+This project is a demonstration of a microservices architecture implementation for an e-commerce application.  
+The system design of this application is somewhat overstated and is not necessarily the correct representation for a real e-commerce application.
+
+Currently, authentication or authorization mechanisms are not implemented.
+
 ## Technology Stack
 
-## Architecture Diagram
+- Container Technology
+  - Docker
+  - Docker Compose
+- Container Orchestration
+  - Kubernetes (minikube)
+- Database
+  - PostgreSQL
+  - MongoDB
+- Streaming Platform
+  - Apache Kafka
+- Server Side
+  - Golang
+    - Echo
+  - Node.js
+    - Express
+- API
+  - GraphQL
+  - gRPC
+- Frontend
+  - Coming soon...
+
+## Server Side Architecture Diagram
 
 ```mermaid
 flowchart BT
-  Client["Client\n(Cycle.js)"]
-  BFF["BFF\n(Express + GraphQL)"]
+  Client["Client"]
+  BFF["BFF\n(Express)"]
 
   subgraph Product["Product (CRUD)"]
     ProductService["Service\n(Golang)"]
     ProductDB["DB\n(postgreSQL)"]
+  end
+
+  subgraph Order["Order (CRUD)"]
+    OrderService["Service\n(Golang)"]
+    OrderDB["DB\n(postgreSQL)"]
   end
 
   subgraph Cart["Cart (CQRS + ES)"]
@@ -19,28 +50,30 @@ flowchart BT
     CartQueryService["QueryService\n(Golang)"]
     CartEventHandler["EventHandler\n(Golang)"]
     MessagingQueue["Messaging Queue\n(Apache Kafka)"]
-    CartEventStore["Event Store\n(DynamoDB)"]
+    CartEventStore["Event Store\n(MongoDB)"]
     CartReadDB["Read DB\n(postgreSQL)"]
   end
 
-  subgraph Order["Order (CQS + ES)"]
-    OrderService["Service\n(Golang)"]
-    OrderDB["DB\n(postgreSQL)"]
-    subgraph OrderDB["DB (postgreSQL)"]
-      OrderEventTable["Event Table"]
-      OrderStateTable["State Table"]
+  subgraph User["User (CQS + ES)"]
+    UserService["Service\n(Golang)"]
+    UserDB["DB\n(postgreSQL)"]
+    subgraph UserDB["DB (postgreSQL)"]
+      UserEventTable["Event Table"]
+      UserStateTable["State Table"]
     end
   end
 
-  Client <--> BFF
+  Client <--"GraphQL"--> BFF
   BFF <--"gRPC"--> ProductService
   BFF <--"gRPC"--> CartCommandService
   BFF <--"gRPC"--> CartQueryService
+  BFF <--"gRPC"--> UserService
   BFF <--"gRPC"--> OrderService
   ProductService <--> ProductDB
   CartCommandService <--> CartEventStore
   CartCommandService --> MessagingQueue --> CartEventHandler --> CartReadDB
   CartQueryService <--> CartReadDB
+  UserService <--> UserDB
   OrderService <--> OrderDB
 ```
 
@@ -51,6 +84,10 @@ flowchart BT
 ```mermaid
 classDiagram
   class User {
+    <<Abstract>>
+  }
+
+  class Customer {
   }
 
   class Order {
@@ -68,9 +105,10 @@ classDiagram
   class Product {
   }
 
-  User "1" *-- "0..*" Order
-  User "0..1" *-- "1" Cart
-  note for Cart "A cart can exist without a user, but \nwhen a user deletes his account, the \ncart associated with it also disappears."
+  User <|-- Customer
+  Customer "1" *-- "0..*" Order
+  Customer "0..1" *-- "1" Cart
+  note for Cart "A cart can exist without a customer, but \nwhen a customer deletes his/her account, \nthe cart associated with it also disappears."
   Order "1" *-- "1..*" OrderDetail
   Product "1" o-- "1..*" CartItem
   Product "1" o-- "1..*" OrderDetail
@@ -81,7 +119,13 @@ classDiagram
 
 ```mermaid
 graph LR
-  User(User)
+  Customer(Customer)
+
+  subgraph User
+    Login["Login (not implemented)"]
+    Logout["Logout (not implemented)"]
+    ViewProfile
+  end
 
   subgraph Product
     ViewProducts
@@ -90,7 +134,7 @@ graph LR
   subgraph Order
     Checkout
     CreateOrder
-    ViewOrder
+    ViewOrders
   end
 
   subgraph Cart
@@ -101,14 +145,15 @@ graph LR
     ResetCart
   end
 
-  User --> ViewProducts
-  User --> AddProduct
-  User --> RemoveProduct
-  User --> ChangeProductQuantity
-  User --> ViewCart
-  User --> ResetCart
-  User --> Checkout
-  User --> ViewOrder
+  Customer --> ViewProfile
+  Customer --> ViewProducts
+  Customer --> AddProduct
+  Customer --> RemoveProduct
+  Customer --> ChangeProductQuantity
+  Customer --> ViewCart
+  Customer --> ResetCart
+  Customer --> Checkout
+  Customer --> ViewOrders
   Checkout -.-> ResetCart
   Checkout -.-> CreateOrder
 ```
