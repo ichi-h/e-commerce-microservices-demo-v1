@@ -41,3 +41,17 @@ services:
       - apparmor:unconfined
     cap_add:
       - SYS_PTRACE
+
+  go-user:
+    container_name: go-user
+    build:
+      context: "./docker"
+    volumes:
+      - ./go/services/user:/app
+    ports:
+      - "1326:1326"
+      - "2348:2348"
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
