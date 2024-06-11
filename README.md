@@ -17,6 +17,8 @@ Currently, authentication or authorization mechanisms are not implemented.
   - MongoDB
 - Streaming Platform
   - Apache Kafka
+- Proxy Server
+  - Envoy
 - Server Side
   - Golang
     - Echo
@@ -32,43 +34,69 @@ Currently, authentication or authorization mechanisms are not implemented.
 
 ```mermaid
 flowchart BT
-  Client["Client"]
-  BFF["BFF\n(Hono)"]
+  Client
+
+  subgraph BFF
+    BFFProxy["Proxy\n(Envoy)"]
+    BFFService["Service\n(Hono)"]
+    BFFProxy <--> BFFService
+  end
 
   subgraph Product["Product (CRUD)"]
+    ProductProxy["Proxy\n(Envoy)"]
     ProductService["Service\n(Golang)"]
     ProductDB["DB\n(postgreSQL)"]
+    
+    ProductProxy <--> ProductService 
   end
 
   subgraph Order["Order (CRUD)"]
+    OrderProxy["Proxy\n(Envoy)"]
     OrderService["Service\n(Golang)"]
     OrderDB["DB\n(postgreSQL)"]
+    OrderProxy <--> OrderService
   end
 
   subgraph Cart["Cart (CQRS + ES)"]
+    CartCommandProxy["Proxy\n(Envoy)"]
+    CartQueryProxy["Proxy\n(Envoy)"]
     CartCommandService["CommandService\n(Golang)"]
     CartQueryService["QueryService\n(Golang)"]
     CartEventHandler["EventHandler\n(Golang)"]
     MessagingQueue["Messaging Queue\n(Apache Kafka)"]
     CartEventStore["Event Store\n(MongoDB)"]
     CartReadDB["Read DB\n(postgreSQL)"]
+    CartCommandProxy <--> CartCommandService
+    CartQueryProxy <--> CartQueryService
+    
   end
 
   subgraph User["User (CQS + ES)"]
+    UserProxy["Proxy\n(Envoy)"]
     UserService["Service\n(Golang)"]
     UserDB["DB\n(postgreSQL)"]
+    UserProxy <--> UserService
     subgraph UserDB["DB (postgreSQL)"]
       UserEventTable["Event Table"]
       UserStateTable["State Table"]
     end
   end
 
-  Client <--"GraphQL"--> BFF
-  BFF <--"gRPC"--> ProductService
-  BFF <--"gRPC"--> CartCommandService
-  BFF <--"gRPC"--> CartQueryService
-  BFF <--"gRPC"--> UserService
-  BFF <--"gRPC"--> OrderService
+  %% Endpoint Discovery Service (planning to implement in the future)
+  %% EDS
+  %% BFFProxy <-...-> EDS
+  %% ProductProxy <-...-> EDS
+  %% CartCommandProxy <-...-> EDS
+  %% CartQueryProxy <-...-> EDS
+  %% UserProxy <-...-> EDS
+  %% OrderProxy <-...-> EDS
+
+  Client <--"GraphQL"--> BFFProxy
+  BFFProxy <--"gRPC"---> ProductProxy
+  BFFProxy <--"gRPC"---> CartCommandProxy
+  BFFProxy <--"gRPC"---> CartQueryProxy
+  BFFProxy <--"gRPC"---> UserProxy
+  BFFProxy <--"gRPC"---> OrderProxy
   ProductService <--> ProductDB
   CartCommandService <--> CartEventStore
   CartCommandService --> MessagingQueue --> CartEventHandler --> CartReadDB
