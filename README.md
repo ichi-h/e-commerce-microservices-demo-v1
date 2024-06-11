@@ -21,7 +21,7 @@ Currently, authentication or authorization mechanisms are not implemented.
   - Golang
     - Echo
   - Node.js
-    - Express
+    - Hono
 - API
   - GraphQL
   - gRPC
@@ -33,7 +33,7 @@ Currently, authentication or authorization mechanisms are not implemented.
 ```mermaid
 flowchart BT
   Client["Client"]
-  BFF["BFF\n(Express)"]
+  BFF["BFF\n(Hono)"]
 
   subgraph Product["Product (CRUD)"]
     ProductService["Service\n(Golang)"]
