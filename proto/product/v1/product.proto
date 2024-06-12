@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "pkg/grpc";
+
+package product.v1;
+
+import "product/v1/view_products.proto";
+
+service ProductService {
+  rpc Hello (ViewProductRequest) returns (ViewProductResponse);
+}
