@@ -3,7 +3,7 @@ services:
   go-cart:
     container_name: go-cart
     build:
-      context: "./docker"
+      context: "./docker/go/cart"
     volumes:
       - ./go/services/cart:/app
     ports:
@@ -17,7 +17,7 @@ services:
   go-product:
     container_name: go-product
     build:
-      context: "./docker"
+      context: "./docker/go/product"
     volumes:
       - ./go/services/product:/app
     ports:
@@ -31,7 +31,7 @@ services:
   go-order:
     container_name: go-order
     build:
-      context: "./docker"
+      context: "./docker/go/order"
     volumes:
       - ./go/services/order:/app
     ports:
@@ -45,7 +45,7 @@ services:
   go-user:
     container_name: go-user
     build:
-      context: "./docker"
+      context: "./docker/go/user"
     volumes:
       - ./go/services/user:/app
     ports:

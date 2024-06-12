@@ -12,4 +12,3 @@ RUN apt-get update && \
 VOLUME /usr/src/app
 
 CMD ["air", "-c", ".air.toml"]
-EXPOSE 1323
