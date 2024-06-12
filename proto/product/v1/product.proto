@@ -4,8 +4,8 @@ option go_package = "pkg/grpc";
 
 package product.v1;
 
-import "product/v1/view_products.proto";
+import "product/v1/get_products.proto";
 
 service ProductService {
-  rpc Hello (ViewProductRequest) returns (ViewProductResponse);
+  rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
 }

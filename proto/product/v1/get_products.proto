@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "pkg/grpc";
+
+package product.v1;
+
+message Product {
+  string id = 1;
+  string name = 2;
+  float price = 3;
+}
+
+message GetProductsRequest {
+  int32 offset = 1;
+  int32 limit = 2;
+}
+
+message GetProductsResponse {
+  repeated Product products = 1;
+}
