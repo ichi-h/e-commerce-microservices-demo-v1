@@ -1,0 +1,15 @@
+{
+  "name": "@e-commerce/product-connect",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup index.ts"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0"
+  }
+}
