@@ -1,4 +1,0 @@
-version: v2
-plugins:
-  - remote: buf.build/grpc/go
-    out: ../go/services/product

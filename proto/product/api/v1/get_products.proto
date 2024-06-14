@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "pkg/grpc";
 
-package product.v1;
+package api.v1;
 
 message Product {
   string id = 1;

@@ -2,9 +2,9 @@ syntax = "proto3";
 
 option go_package = "pkg/grpc";
 
-package product.v1;
+package api.v1;
 
-import "product/v1/get_products.proto";
+import "api/v1/get_products.proto";
 
 service ProductService {
   rpc GetProducts (GetProductsRequest) returns (GetProductsResponse);
