@@ -1,1 +1,1 @@
-docker logs -f go-cart
+docker logs -f $1
