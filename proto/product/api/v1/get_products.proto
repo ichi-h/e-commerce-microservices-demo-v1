@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "pkg/grpc";
+option go_package = "product/pkg/api/v1";
 
 package api.v1;
 
