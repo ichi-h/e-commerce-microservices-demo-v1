@@ -3,6 +3,9 @@
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
+    "@connectrpc/connect": "^1.4.0",
+    "@connectrpc/connect-web": "^1.4.0",
+    "@e-commerce/product-connect": "workspace:*",
     "@hono/node-server": "^1.11.2",
     "hono": "^4.4.5"
   },
